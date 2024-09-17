@@ -1,0 +1,42 @@
+version: "3"
+services:
+  dev:
+    image: palemanudeep/medusa_dev
+    ports:
+      - "7001:7001"
+      - "9000:9000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://postgres:Anudeep@8074@postgres:5432/medusanew
+      - REDIS_URL=redis://redis:6379
+    command: ["yarn", "start"]
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Anudeep@8074
+      POSTGRES_DB: medusanew
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+volumes:
+  pgdata:
+  redisdata:
